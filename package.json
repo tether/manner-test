@@ -1,0 +1,27 @@
+
+{
+  "name": "manner-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tether/manner-test.git"
+  },
+  "keywords": [
+    "tether"
+  ],
+  "author": "Petrofeed Inc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tether/manner-test/issues"
+  },
+  "homepage": "https://github.com/tether/manner-test#readme",
+  "devDependencies": {
+    "tape": "*"
+  }
+}
+  
