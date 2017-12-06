@@ -15,11 +15,14 @@ const manner = require('..')
 const service = manner({
   get() {
     return 'hello'
+  },
+  post: {
+    '/': () => 'world',
+    '/:name': name => 'hello ' + name
   }
 })
 
-
-test('should return an object containing service method(s)', assert => {
+test('should proxy service method(s)', assert => {
   assert.plan(1)
   assert.equal(typeof service.get, 'function')
   assert.equal(service.options == null, true)

@@ -3,7 +3,7 @@
  */
 
 const bluff = require('bluff')
-
+const manner = require('manner')
 
 /**
  * Mock up HTTP response as returned by
@@ -14,9 +14,9 @@ const bluff = require('bluff')
  */
 
 module.exports = function (service) {
-  return new Proxy({}, {
+  return new Proxy(manner(service), {
     get(target, key, receiver) {
-      const method = service[key]
+      const method = target[key]
       return (path, query, data) => {
         return bluff(method(path, query, data))
       }
