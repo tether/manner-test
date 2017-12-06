@@ -1,4 +1,3 @@
-
 {
   "name": "manner-test",
   "version": "1.0.0",
@@ -22,6 +21,9 @@
   "homepage": "https://github.com/tether/manner-test#readme",
   "devDependencies": {
     "tape": "*"
+  },
+  "dependencies": {
+    "bluff": "^2.0.0",
+    "manner": "^3.1.0"
   }
 }
-  

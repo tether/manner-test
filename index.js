@@ -19,6 +19,14 @@ module.exports = function (service) {
       const method = target[key]
       return (path, query, data) => {
         return bluff(method(path, query, data))
+          .then(value => {
+            return {
+              status: 200,
+              payload: value
+            }
+          }, reason => {
+
+          })
       }
     }
   })
