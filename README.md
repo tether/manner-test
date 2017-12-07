@@ -5,11 +5,13 @@
 [![Downloads](https://img.shields.io/npm/dm/manner-test.svg)](http://npm-stat.com/charts.html?package=manner-test)
 [![guidelines](https://tether.github.io/contribution-guide/badge-guidelines.svg)](https://github.com/tether/contribution-guide)
 
-This is a simple description.
+This library allows you to test the output of [manner](https://github.com/tether/manner) services without the need of a HTTP server. 
+
 
 ## Usage
 
 ```js
+const test = require('tape')
 const api = require('manner-test')
 
 const test = api({
@@ -20,10 +22,15 @@ const test = api({
   }
 })
 
-test.get('/', null, null, {
-  200: {
-   foo: 'bar'
-  }
+test('should return foo bar', assert => {
+  assert.plan(2)
+  test.get('/')
+    .then(response => {
+      assert.equal(response.status, 200)
+      assert.deepEqual(response.payload, {
+        foo: 'bar'
+      })
+    })
 })
 ```
 

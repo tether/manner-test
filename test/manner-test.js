@@ -78,7 +78,6 @@ test('should reject method that return error with specific status', assert => {
   assert.plan(2)
   service.post('/403')
     .then(null, response => {
-      console.log(response)
       assert.equal(response.status, 403)
       assert.equal(response.payload, 'Unauthorized')
     })

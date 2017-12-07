@@ -1,7 +1,7 @@
 {
   "name": "manner-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "Test manner services programmatically",
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js"

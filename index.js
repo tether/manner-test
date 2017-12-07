@@ -18,14 +18,7 @@ module.exports = function (service) {
     get(target, key, receiver) {
       const method = target[key]
       return (path, query, data) => {
-        let value
-        try {
-          value = method(path, query, data)
-          if (value instanceof Error) value = Promise.reject(value)
-        } catch (e) {
-          value = Promise.reject(e)
-        }
-        return bluff(value)
+        return bluff(salute(method.bind(null, path, query, data)))
           .then(value => {
             return {
               status: 200,
@@ -40,4 +33,24 @@ module.exports = function (service) {
       }
     }
   })
+}
+
+
+/**
+ * Simulate salute behavious.
+ *
+ * @param {Function} cb
+ * @see https://github.com/bredele/salute
+ * @api private
+ */
+
+function salute (cb) {
+  let value
+  try {
+    value = cb()
+    if (value instanceof Error) value = Promise.reject(value)
+  } catch (e) {
+    value = Promise.reject(e)
+  }
+  return value
 }
