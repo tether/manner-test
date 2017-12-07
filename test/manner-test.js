@@ -18,7 +18,15 @@ const service = manner({
   },
   post: {
     '/': query => 'hello ' + query.name,
-    '/:name': query => 'hello ' + query.name
+    '/:name': query => 'hello ' + query.name,
+    '/500': () => {
+      throw new Error('this is some default error')
+    },
+    '/403': () => {
+      const error = new Error('Unauthorized')
+      error.status = 403
+      return error
+    }
   }
 })
 
@@ -28,7 +36,7 @@ test('should proxy service method(s)', assert => {
   //assert.equal(service.options == null, true)
 })
 
-test('should call method', assert => {
+test('should resolve method', assert => {
   assert.plan(2)
   service.get('/')
     .then(response => {
@@ -37,7 +45,7 @@ test('should call method', assert => {
     })
 })
 
-test('should call method with query parameters', assert => {
+test('should resolve method with query parameters', assert => {
   assert.plan(2)
   service.post('/', {
     name: 'bob'
@@ -48,11 +56,30 @@ test('should call method with query parameters', assert => {
     })
 })
 
-test('should call method with route', assert => {
+test('should resolve method with route', assert => {
   assert.plan(2)
   service.post('/olivier')
     .then(response => {
       assert.equal(response.status, 200)
       assert.equal(response.payload, 'hello olivier')
+    })
+})
+
+test('should reject methodthat throw error with default status', assert => {
+  assert.plan(2)
+  service.post('/500')
+    .then(null, response => {
+      assert.equal(response.status, 500)
+      assert.equal(response.payload, 'this is some default error')
+    })
+})
+
+test('should reject method that return error with specific status', assert => {
+  assert.plan(2)
+  service.post('/403')
+    .then(null, response => {
+      console.log(response)
+      assert.equal(response.status, 403)
+      assert.equal(response.payload, 'Unauthorized')
     })
 })
