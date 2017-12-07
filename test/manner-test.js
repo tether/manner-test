@@ -68,7 +68,7 @@ test('should resolve method with route', assert => {
 test('should reject methodthat throw error with default status', assert => {
   assert.plan(2)
   service.post('/500')
-    .then(null, response => {
+    .then(response => {
       assert.equal(response.status, 500)
       assert.equal(response.payload, 'this is some default error')
     })
@@ -77,7 +77,7 @@ test('should reject methodthat throw error with default status', assert => {
 test('should reject method that return error with specific status', assert => {
   assert.plan(2)
   service.post('/403')
-    .then(null, response => {
+    .then(response => {
       assert.equal(response.status, 403)
       assert.equal(response.payload, 'Unauthorized')
     })

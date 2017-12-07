@@ -25,7 +25,7 @@ module.exports = function (service) {
               payload: value
             }
           }, reason => {
-            return Promise.reject({
+            return Promise.resolve({
               status: reason.status || 500,
               payload: reason.message
             })
