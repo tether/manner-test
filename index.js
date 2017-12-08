@@ -5,7 +5,7 @@
 const bluff = require('bluff')
 const manner = require('manner')
 const isokay = require('isokay')
-
+const passover = require('passover')
 
 /**
  * Mock up HTTP response as returned by
@@ -16,12 +16,26 @@ const isokay = require('isokay')
  * @api public
  */
 
-module.exports = function (service, schema) {
+module.exports = function (service, schema = {}) {
+  const options = passover(schema)
   return new Proxy(manner(service), {
     get(target, key, receiver) {
       const method = target[key]
       return (path, query, data) => {
-        return bluff(salute(method.bind(null, path, query, data)))
+        const schema = options(key, path)
+        return Promise.all([
+            isokay(query, schema && schema.query),
+            isokay(data, schema && schema.body)
+          ])
+          .then(values =>  {
+            return bluff(salute(method.bind(null, path, values[0], values[1])))
+          }, err => {
+            // manage errors coming from isokay
+            return Promise.reject({
+              status: 400,
+              message: err.message
+            })
+          })
           .then(value => {
             return {
               status: 200,
@@ -33,6 +47,18 @@ module.exports = function (service, schema) {
               payload: reason.message
             })
           })
+        // return bluff(salute(method.bind(null, path, query, data)))
+        //   .then(value => {
+        //     return {
+        //       status: 200,
+        //       payload: value
+        //     }
+        //   }, reason => {
+        //     return Promise.resolve({
+        //       status: reason.status || 500,
+        //       payload: reason.message
+        //     })
+        //   })
       }
     }
   })

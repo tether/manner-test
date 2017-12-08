@@ -86,7 +86,7 @@ test('should reject method that return error with specific status', assert => {
 test('should accept schema and return 400 if not validated', assert => {
   assert.plan(4)
   const service = manner({
-    get(query, body) {
+    get(query) {
       return 'hello'
     }
   }, {
