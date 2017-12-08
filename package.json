@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "bluff": "^2.0.0",
+    "isokay": "^1.0.1",
     "manner": "^3.2.1"
   }
 }

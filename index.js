@@ -4,16 +4,19 @@
 
 const bluff = require('bluff')
 const manner = require('manner')
+const isokay = require('isokay')
+
 
 /**
  * Mock up HTTP response as returned by
  * a manner service.
  *
  * @param {Object} service (manner's service)
+ * @param {Object} schema
  * @api public
  */
 
-module.exports = function (service) {
+module.exports = function (service, schema) {
   return new Proxy(manner(service), {
     get(target, key, receiver) {
       const method = target[key]

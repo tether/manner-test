@@ -82,3 +82,41 @@ test('should reject method that return error with specific status', assert => {
       assert.equal(response.payload, 'Unauthorized')
     })
 })
+
+test('should accept schema and return 400 if not validated', assert => {
+  assert.plan(4)
+  const service = manner({
+    get(query, body) {
+      return 'hello'
+    }
+  }, {
+    get: {
+      '/': {
+        query: {
+          email: {
+            required: true
+          },
+          city: {
+            validate(value) {
+              return value === 'calgary'
+            }
+          }
+        }
+      }
+    }
+  })
+  service.get('/', {
+    city: 'calgary'
+  }).then(res => assert.equal(res.status, 400))
+  service.get('/', {
+    email: 'haha@gmail.com',
+    city: 'calgsary'
+  }).then(res => assert.equal(res.status, 400))
+  service.get('/', {
+    email: 'haha@gmail.com',
+    city: 'calgary'
+  }).then(res => {
+    assert.equal(res.status, 200)
+    assert.equal(res.payload, 'hello')
+  })
+})
