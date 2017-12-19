@@ -1,6 +1,6 @@
 {
   "name": "manner-test",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Test manner services programmatically",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "dependencies": {
     "bluff": "^2.0.0",
     "isokay": "^1.1.2",
-    "manner": "^4.2.1",
+    "manner": "^4.2.2",
     "passover": "^1.0.0"
   }
 }
